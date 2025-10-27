@@ -86,6 +86,7 @@ exports.signup = async (req, res) => {
       about: null,
       contactNumber: null,
     })
+
     const user = await User.create({
       firstName,
       lastName,
@@ -191,12 +192,13 @@ exports.sendotp = async (req, res) => {
     // If user found with provided email
     if (checkUserPresent) {
       // Return 401 Unauthorized status code with error message
-      return res.status(401).json({
+      return res.status(400).json({
         success: false,
         message: `User is Already Registered`,
       })
     }
 
+    // Generate Unique OTP
     var otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
@@ -206,12 +208,16 @@ exports.sendotp = async (req, res) => {
     // console.log("Result is Generate OTP Func")
     // console.log("OTP", otp)
     // console.log("Result", result)
+
     while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
       })
     }
+
     const otpPayload = { email, otp }
+    
+    // Save OTP to database
     const otpBody = await OTP.create(otpPayload)
     // const otpBody = new OTP(otpPayload);
     // await otpBody.save();
