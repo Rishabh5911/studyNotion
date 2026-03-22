@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom"
 
 
 import { setCourse, setEditCourse } from "../../../../slices/courseSlice"
+import getFullDetailsOfCourse from "../../../../services/operations/courseDetailsAPI"
 import RenderSteps from "../AddCourse/RenderSteps"
 
 export default function EditCourse() {
